@@ -1,0 +1,58 @@
+#!/bin/sh -ex
+
+DB_NAME=vanilla
+DB_USER=vanilla
+DB_PASS=$(mcookie)
+
+ADMIN_NAME=admin
+ADMIN_PASS=turnkey
+
+SRC=/usr/local/src
+WEBROOT=/var/www/vanilla
+
+# unpack
+unzip $SRC/vanilla-core-*.zip -d $(dirname $WEBROOT)
+rm $SRC/vanilla-core-*.zip
+chown -R root:root $WEBROOT
+chown -R www-data:www-data $WEBROOT/conf
+chown -R www-data:www-data $WEBROOT/cache
+chown -R www-data:www-data $WEBROOT/uploads
+
+# configure apache
+a2dissite default
+a2ensite vanilla
+a2enmod rewrite
+
+# start services
+/etc/init.d/mysql start
+/etc/init.d/apache2 start
+
+# setup the database
+MYSQL_BATCH="mysql --user=root --password=$MYSQL_PASS --batch"
+MYSQL_ADMIN="mysqladmin --user=root --password=$MYSQL_PASS"
+
+$MYSQL_ADMIN create $DB_NAME
+$MYSQL_BATCH --execute "grant all privileges on $DB_NAME.* to $DB_USER@localhost identified by '$DB_PASS'; flush privileges;"
+
+# curl based install
+URL="http://127.0.0.1/index.php?p=/dashboard/setup"
+CURL="curl -c /tmp/cookie -b /tmp/cookie"
+
+$CURL $URL --data "Configuration%2FTransientKey=AJ7J7KUBJP2N&Configuration%2Fhpt=&Configuration%2FDatabase-dot-Host=localhost&Configuration%2FDatabase-dot-Name=$DB_NAME&Configuration%2FDatabase-dot-User=$DB_USER&Configuration%2FDatabase-dot-Password=$DB_PASS&Configuration%2FGarden-dot-Title=TurnKey+Vanilla&Configuration%2FEmail=admin%40example.com&Configuration%2FName=$ADMIN_NAME&Configuration%2FPassword=$ADMIN_PASS&Configuration%2FPasswordMatch=$ADMIN_PASS&Configuration%2FContinue_%2526rarr%253B=Continue+%E2%86%92"
+rm -f /tmp/cookie
+
+# configure email
+sed -i "s|\$Configuration\['Garden'\]\['Email'\]\['SupportName'\] = 'TurnKey Vanilla';|\$Configuration\['Garden'\]\['Email'\]\['SupportName'\] = 'TurnKey Vanilla';\n\$Configuration\['Garden'\]\['Email'\]\['SupportAddress'\] = 'admin@example.com';\n\$Configuration\['Garden'\]\['Email'\]\['UseSmtp'\] = '1';\n\$Configuration\['Garden'\]\['Email'\]\['SmtpHost'\] = '127.0.0.1';\n\$Configuration\['Garden'\]\['Email'\]\['SmtpUser'\] = '';\n\$Configuration\['Garden'\]\['Email'\]\['SmtpPassword'\] = '';\n\$Configuration\['Garden'\]\['Email'\]\['SmtpPort'\] = '25';\n\$Configuration\['Garden'\]\['Email'\]\['SmtpSecurity'\] = '';\n|" $WEBROOT/conf/config.php
+
+chmod 640 $WEBROOT/conf/config.php
+
+# create welcome page
+DATE="2012-01-01 11:11:11"
+WELCOME='<p>Welcome to your new forum, lets get you started...</p><ol><li>Sign in as <b>admin</b> and visit the <a href=\"/dashboard/settings\">dashboard</a> to customize your forum.</li><li>When ready, delete this welcome discussion and start some new ones.</li></ol><p>For more information, check out the <a href=\"http://www.turnkeylinux.org/vanilla\">release notes</a> and the <a href=\"http://vanillaforums.org/docs/\">online documentation</p>.'
+
+$MYSQL_BATCH --database=$DB_NAME --execute "INSERT INTO GDN_Discussion VALUES ('1', NULL, NULL, '1', '1', '1', NULL, 'Welcome to TurnKey Vanilla', '$WELCOME', 'Html', NULL, '1', NULL, '1', '0', '1', '0', '$DATE', '$DATE', '127.0.0.1', '127.0.0.1', '$DATE', NULL, NULL, NULL, NULL);"
+
+# stop services
+/etc/init.d/mysql stop
+/etc/init.d/apache2 stop
+
