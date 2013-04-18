@@ -11,7 +11,8 @@ SRC=/usr/local/src
 WEBROOT=/var/www/vanilla
 
 # unpack
-unzip $SRC/vanilla-core.zip -d $(dirname $WEBROOT)
+mkdir -p $WEBROOT
+unzip $SRC/vanilla-core.zip -d $WEBROOT
 rm $SRC/vanilla-core.zip
 chown -R root:root $WEBROOT
 chown -R www-data:www-data $WEBROOT/conf
