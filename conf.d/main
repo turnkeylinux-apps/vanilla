@@ -10,6 +10,7 @@ ADMIN_PASS=turnkey
 SRC=/usr/local/src
 WEBROOT=/var/www/vanilla
 
+
 # unpack
 mkdir -p $WEBROOT
 unzip $SRC/vanilla-core.zip -d $WEBROOT/..
@@ -20,14 +21,15 @@ chown -R www-data:www-data $WEBROOT/cache
 chown -R www-data:www-data $WEBROOT/uploads
 
 # configure apache
-#a2dissite default
-rm /etc/apache2/sites-enabled/*default*
+a2dissite default
 a2ensite vanilla
 a2enmod rewrite
+
 
 # start services
 /etc/init.d/mysql start
 /etc/init.d/apache2 start
+
 
 # setup the database
 MYSQL_BATCH="mysql --user=root --password=$MYSQL_PASS --batch"
@@ -39,9 +41,10 @@ $MYSQL_BATCH --execute "grant all privileges on $DB_NAME.* to $DB_USER@localhost
 # curl based install
 URL="http://127.0.0.1/index.php?p=/dashboard/setup"
 CURL="curl -c /tmp/cookie -b /tmp/cookie"
+DATA="TransientKey=&hpt=&RewriteUrls=1&Database-dot-Host=localhost&Database-dot-Name=$DB_NAME&Database-dot-User=$DB_USER&Database-dot-Password=$DB_PASS&Garden-dot-Title=Turnkey+Vanilla&Email=admin%40example.com&Name=$ADMIN_NAME&Password=$ADMIN_PASS&PasswordMatch=$ADMIN_PASS&Continue_%2526rarr%253B=Continue+%E2%86%92"
 
-
-$CURL $URL --data "TransientKey=&hpt=&RewriteUrls=1&Database-dot-Host=localhost&Database-dot-Name=$DB_NAME&Database-dot-User=$DB_USER&Database-dot-Password=$DB_PASS&Garden-dot-Title=Turnkey+Vanilla&Email=admin%40example.com&Name=$ADMIN_NAME&Password=$ADMIN_PASS&PasswordMatch=$ADMIN_PASS&Continue_%2526rarr%253B=Continue+%E2%86%92"
+$CURL $URL
+$CURL -d $DATA $URL
 rm -f /tmp/cookie
 
 # configure email
