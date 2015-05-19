@@ -21,7 +21,7 @@ chown -R www-data:www-data $WEBROOT/cache
 chown -R www-data:www-data $WEBROOT/uploads
 
 # configure apache
-a2dissite default
+a2dissite 000-default
 a2ensite vanilla
 a2enmod rewrite
 
