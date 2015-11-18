@@ -55,7 +55,7 @@ chmod 640 $WEBROOT/conf/config.php
 # create welcome page
 DATE="2012-01-01 11:11:11"
 WELCOME_TITLE='Welcome to Turnkey Vanilla'
-WELCOME='<p>Welcome to your new forum, lets get you started...</p><ol><li>Sign in as <b>admin</b> and visit the <a href=\"/dashboard/settings\">dashboard</a> to customize your forum.</li><li>When ready, delete this welcome discussion and start some new ones.</li><li>Check out the discussion left by the vanilla dev team!</li></ol><p>For more information, check out the <a href=\"http://www.turnkeylinux.org/vanilla\">release notes</a> and the <a href=\"http://vanillaforums.org/docs/\">online documentation</p>'
+WELCOME='<p>Welcome to your new forum, lets get you started...</p><ol><li>Sign in as <b>admin</b> and visit the <a href=\"/dashboard/settings\">dashboard</a> to customize your forum.</li><li>When ready, delete this welcome discussion and start some new ones.</li><li>Check out the discussion left by the vanilla dev team!</li></ol><p>For more information, check out the <a href=\"https://www.turnkeylinux.org/vanilla\">release notes</a> and the <a href=\"http://vanillaforums.org/docs/\">online documentation</p>'
 
 $MYSQL_BATCH --database=$DB_NAME --execute "INSERT INTO GDN_Discussion VALUES ('2', NULL, NULL, '1', '2', NULL, NULL, NULL, '$WELCOME_TITLE', '$WELCOME', 'Html', NULL, '0', NULL, '0', '0', '1', '0', '$DATE', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);"
 
