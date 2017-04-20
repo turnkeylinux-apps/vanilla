@@ -13,7 +13,7 @@ WEBROOT=/var/www/vanilla
 
 # unpack
 mkdir -p $WEBROOT
-unzip $SRC/vanilla-core.zip -d $WEBROOT/..
+unzip $SRC/vanilla-core.zip -d $WEBROOT/
 rm $SRC/vanilla-core.zip
 chown -R root:root $WEBROOT
 chown -R www-data:www-data $WEBROOT/conf

@@ -1,3 +1,14 @@
+turnkey-vanilla-14.2 (1) turnkey; urgency=low
+
+  * Latest upstream version of Vanilla (tested on 2.3).
+
+  * Updated Adminer to 4.2.5
+
+  * Note: Please refer to turnkey-core's changelog for changes common to all
+    appliances. Here we only describe changes specific to this appliance.
+
+ -- Stefan Davis <stefan@turnkeylinux.org>  Tue, 18 Apr 2017 12:01:48 +1000
+
 turnkey-vanilla-14.1 (1) turnkey; urgency=low
 
   * Installed security updates.
