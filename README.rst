@@ -13,6 +13,10 @@ and on top of that:
    
    - Installed from upstream source code to /var/www/vanilla
 
+   **Security note**: Updates to Vanilla may require supervision so
+   they **ARE NOT** configured to install automatically. See `Vanilla
+   documentation`_ for upgrading.
+
 - SSL support out of the box.
 - `Adminer`_ administration frontend for MySQL (listening on port
   12322 - uses SSL).
@@ -31,3 +35,4 @@ Credentials *(passwords set at first boot)*
 .. _Vanilla: http://vanillaforums.org/
 .. _TurnKey Core: https://www.turnkeylinux.org/core
 .. _Adminer: http://www.adminer.org/
+.. _Vanilla documentation: https://github.com/vanilla/vanilla#upgrading
