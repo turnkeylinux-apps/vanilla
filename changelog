@@ -1,6 +1,6 @@
 turnkey-vanilla-15.0 (1) turnkey; urgency=low
 
-  * Install latest upstream version of Vanilla
+  * Install latest upstream version of Vanilla (2.6)
 
   * Install Adminer directly from stretch/main repo
 
