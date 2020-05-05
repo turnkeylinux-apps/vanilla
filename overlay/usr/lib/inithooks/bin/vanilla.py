@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """Set Vanilla admin password and email
 
 Option:
@@ -20,16 +20,16 @@ from mysqlconf import MySQL
 
 def usage(s=None):
     if s:
-        print >> sys.stderr, "Error:", s
-    print >> sys.stderr, "Syntax: %s [options]" % sys.argv[0]
-    print >> sys.stderr, __doc__
+        print("Error:", s, file=sys.stderr)
+    print("Syntax: %s [options]" % sys.argv[0], file=sys.stderr)
+    print(__doc__, file=sys.stderr)
     sys.exit(1)
 
 def main():
     try:
         opts, args = getopt.gnu_getopt(sys.argv[1:], "h",
                                        ['help', 'pass=', 'email='])
-    except getopt.GetoptError, e:
+    except getopt.GetoptError as e:
         usage(e)
 
     password = ""
@@ -68,13 +68,15 @@ def main():
     cryptpass = stdout.strip()
 
     m = MySQL()
-    m.execute('UPDATE vanilla.GDN_User SET Password=\"%s\" WHERE Name=\"admin\";' % cryptpass)
-    m.execute('UPDATE vanilla.GDN_User SET Email=\"%s\" WHERE Name=\"admin\";' % email)
+    m.execute('UPDATE vanilla.GDN_User SET Password=%s WHERE Name=\"admin\";', (cryptpass,))
+    m.execute('UPDATE vanilla.GDN_User SET Email=%s WHERE Name=\"admin\";', (email,))
 
     CONFIG="/var/www/vanilla/conf/config.php"
-    old = file(CONFIG).read()
+    with open(CONFIG, 'r') as fob:
+        old = fob.read()
     new = re.sub("\['SupportAddress.*;", "['SupportAddress'] = '%s';" % email, old)
-    file(CONFIG, "w").write(new)
+    with open(CONFIG, 'w') as fob:
+        fob.write(new)
 
 if __name__ == "__main__":
     main()

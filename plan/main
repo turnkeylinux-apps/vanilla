@@ -4,6 +4,9 @@
 php-gd
 php-cli
 php-curl
+php-intl
+php-mbstring
+php-xml
 
 unzip
 
