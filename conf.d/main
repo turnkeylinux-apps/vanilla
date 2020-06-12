@@ -15,6 +15,10 @@ WEBROOT=/var/www/vanilla
 mkdir -p $WEBROOT
 unzip $SRC/vanilla-core.zip -d $WEBROOT/
 rm $SRC/vanilla-core.zip
+mv $WEBROOT/package/* $WEBROOT
+mv $WEBROOT/package/.htaccess.dist $WEBROOT/.htaccess
+mv $WEBROOT/conf/config-defaults.php $WEBROOT/conf/config.php
+rm -rf $WEBROOT/package
 chown -R root:root $WEBROOT
 chown -R www-data:www-data $WEBROOT/conf
 chown -R www-data:www-data $WEBROOT/cache
