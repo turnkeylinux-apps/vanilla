@@ -1,3 +1,12 @@
+turnkey-vanilla-16.1 (1) turnkey; urgency=low
+
+  * Rebuilt on latest debian buster.
+
+  * Note: Please refer to turnkey-core's 16.1 changelog for changes common to all
+    appliances. Here we only describe changes specific to this appliance.
+
+ -- Stefan Davis <stefan@turnkeylinux.org>  Tue, 23 Mar 2021 20:01:08 +1100
+
 turnkey-vanilla-16.0 (1) turnkey; urgency=low
 
   * Install latest upstream version of Vanilla - 3.3.
