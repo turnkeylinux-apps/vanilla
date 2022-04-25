@@ -1,3 +1,13 @@
+turnkey-vanilla-17.0 (1) turnkey; urgency=low
+
+  * Includes latesst upstream version of Vanilla - v2021.009
+
+  * Updated all relevant Debian packages to Bullseye/11 versions
+
+  * Includes PHP 7.4.
+
+ -- Stefan Davis <stefan@turnkeylinux.org>  Wed, 08 Dec 2021 04:38:58 +0000
+
 turnkey-vanilla-16.1 (1) turnkey; urgency=low
 
   * Rebuilt on latest debian buster.
